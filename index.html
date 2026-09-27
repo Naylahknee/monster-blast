@@ -226,6 +226,60 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .istep>b{font-weight:400;width:calc(var(--u)*8);height:calc(var(--u)*8);border-radius:50%;background:var(--ink);color:var(--yellow);display:grid;place-items:center;font-size:calc(var(--u)*5)}
 .iic{width:calc(var(--u)*14);height:calc(var(--u)*14);display:grid;place-items:center;color:#2a78d6}.iic svg,.iic img{width:100%;height:100%;border-radius:22%}
 .istep p{margin:0;font:800 calc(var(--u)*3.4)/1.3 Nunito,sans-serif}.istep p b{font-family:'Lilita One';font-weight:400}
+#mpBtn{font-size:calc(var(--u)*5.6)}
+#mpLocked[hidden],#mpReady[hidden]{display:none}
+#kpTitle{white-space:nowrap}
+.namecard{display:flex;align-items:center;gap:calc(var(--u)*3);background:var(--ink);border-radius:calc(var(--u)*3);padding:calc(var(--u)*2) calc(var(--u)*4);margin-bottom:calc(var(--u)*3)}
+.namecard span{font:900 calc(var(--u)*2.8) Nunito,sans-serif;color:#9d8fc0}.namecard b{font-weight:400;font-size:calc(var(--u)*6);color:var(--yellow)}
+.btn.sm{font-size:calc(var(--u)*3.4);padding:calc(var(--u)*1) calc(var(--u)*2.6);min-height:40px}
+.mcard{width:calc(var(--u)*44);border:3px solid var(--ink);border-radius:calc(var(--u)*2.6);background:var(--c);color:var(--ink);padding:calc(var(--u)*2.4);box-shadow:0 5px 0 var(--ink);display:flex;flex-direction:column;gap:6px;text-align:left;opacity:.6}
+.mcard.sel{opacity:1;outline:4px solid var(--yellow);outline-offset:3px}
+.mcard b{font-weight:400;font-size:calc(var(--u)*5.4)}.mcard span{font:800 calc(var(--u)*2.8)/1.25 Nunito,sans-serif}
+.wchip{font-size:calc(var(--u)*3);padding:calc(var(--u)*1) calc(var(--u)*2.2);border-radius:8px;border:2.5px solid var(--ink);background:var(--c);color:var(--cream);text-shadow:var(--o);opacity:.55;min-height:40px}
+.wchip.sel{opacity:1;outline:3px solid var(--yellow)}
+#kpDisplay{display:flex;gap:calc(var(--u)*1.6)}
+#kpDisplay i{width:calc(var(--u)*10);height:calc(var(--u)*12);border:3px solid var(--ink);border-radius:calc(var(--u)*1.8);background:#3a2a5c;font-style:normal;display:grid;place-items:center;font-size:calc(var(--u)*7);color:var(--yellow)}
+#kpDisplay i.on{background:var(--cream);color:var(--ink)}
+#kpDisplay.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+#kpKeys{display:grid;grid-template-columns:repeat(3,calc(var(--u)*17));gap:calc(var(--u)*1.6)}
+#kpKeys button{height:calc(var(--u)*11);min-height:44px;border:3px solid var(--ink);border-radius:calc(var(--u)*2);background:var(--cream);color:var(--ink);font-size:calc(var(--u)*6);box-shadow:0 4px 0 var(--ink)}
+#kpKeys button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+#kpKeys .kx{font-size:calc(var(--u)*3.6);background:#bdb2d6}
+.lobhead{display:flex;flex-direction:column;align-items:center;gap:4px}
+.lobhead span{font:900 calc(var(--u)*3) Nunito,sans-serif;color:#cfc3ea}
+#lobCode{font-weight:400;font-size:calc(var(--u)*16);color:var(--yellow);letter-spacing:.12em;line-height:1;text-shadow:var(--o),0 6px 0 var(--ink)}
+#lobInfo{font-size:calc(var(--u)*4);color:var(--cream)}
+#lobSlots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(var(--u)*2);width:min(100%,calc(var(--u)*170))}
+.pslot{background:var(--ink);border:3px solid var(--c,#5a4a7a);border-radius:calc(var(--u)*2.4);padding:calc(var(--u)*2);display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+.pslot i{width:calc(var(--u)*9);height:calc(var(--u)*9);border-radius:50%;background:var(--c);border:3px solid var(--cream)}
+.pslot b{font-weight:400;font-size:calc(var(--u)*3.4);text-align:center}
+.pslot em{font-style:normal;font-size:calc(var(--u)*2.4);background:var(--yellow);color:var(--ink);border-radius:5px;padding:0 6px}
+.pslot em.you{background:var(--cyan)}
+.pslot.empty{opacity:.45;border-style:dashed}.pslot.empty i{background:#3a2a5c;border-color:#5a4a7a}
+#lobStart[hidden],#lobWait[hidden],#resAgain[hidden],#resWait[hidden]{display:none}
+#resRows,#famBoard{display:flex;flex-direction:column;gap:calc(var(--u)*1.2);width:min(100%,calc(var(--u)*110))}
+.rrow{display:flex;align-items:center;gap:calc(var(--u)*2);background:rgba(0,0,0,.3);border-radius:calc(var(--u)*1.8);padding:calc(var(--u)*1.2) calc(var(--u)*2.4);font-size:calc(var(--u)*4)}
+.rrow.me{background:var(--ink);outline:3px solid var(--yellow)}
+.rrow em{font-style:normal;width:calc(var(--u)*6);color:var(--yellow)}.rrow i{width:calc(var(--u)*4);height:calc(var(--u)*4);border-radius:50%;border:2px solid var(--cream)}
+.rrow b{font-weight:400;flex:1}.rrow span{color:var(--cyan)}
+.subttl{font-weight:400;font-size:calc(var(--u)*5);color:var(--yellow);margin:calc(var(--u)*2) 0 0;text-shadow:var(--o)}
+.famcode{font-weight:400;font-size:calc(var(--u)*6);color:var(--yellow);letter-spacing:.1em}
+#pServer{font:800 calc(var(--u)*3.2) Nunito,sans-serif;padding:calc(var(--u)*1.6);border-radius:10px;border:3px solid var(--ink);background:var(--cream);color:var(--ink);width:100%;user-select:text;-webkit-user-select:text;touch-action:auto}
+#mpList{position:absolute;left:var(--sl);top:calc(var(--st) + var(--u)*30);display:flex;flex-direction:column;gap:4px;min-width:calc(var(--u)*40)}
+#mpList[hidden]{display:none}
+.mprow{display:flex;align-items:center;gap:8px;background:rgba(29,18,56,.78);border-radius:8px;padding:3px 10px;font-size:calc(var(--u)*2.9)}
+.mprow.me{outline:2px solid var(--yellow)}.mprow i{width:12px;height:12px;border-radius:50%;border:2px solid var(--cream)}.mprow b{font-weight:400;flex:1}.mprow span{color:var(--yellow)}
+#feed{position:absolute;left:var(--sl);top:calc(var(--st) + var(--u)*62);display:flex;flex-direction:column;align-items:flex-start;gap:4px;pointer-events:none}
+.fd{display:flex;align-items:center;gap:8px;background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);border-radius:99px;padding:2px 14px;font-size:calc(var(--u)*3.2);animation:tin .25s}
+.fd i{width:12px;height:12px;border-radius:50%}.fd b{font-weight:400}.fd span{color:#8b5cff}
+#emoteBtn{position:absolute;right:calc(var(--sr) + var(--u)*30);top:calc(var(--st) + var(--u)*21);width:calc(var(--u)*12);height:calc(var(--u)*12);border-radius:50%;background:var(--yellow);border:3px solid var(--ink);box-shadow:0 4px 0 var(--ink);display:grid;place-items:center;pointer-events:auto}
+#emoteBtn[hidden]{display:none}#emoteBtn svg{width:70%;fill:var(--yellow)}#emoteBtn svg circle:first-child{fill:#fff6e0;stroke:#1d1238;stroke-width:1.6}
+#emoteMenu{position:absolute;right:calc(var(--sr) + var(--u)*44);top:calc(var(--st) + var(--u)*14);display:grid;grid-template-columns:repeat(2,auto);gap:6px;opacity:0;pointer-events:none;transform:scale(.9);transition:.15s}
+#emoteMenu.open{opacity:1;pointer-events:auto;transform:none}
+#emoteMenu button{font-size:calc(var(--u)*3.4);padding:calc(var(--u)*1.2) calc(var(--u)*2.4);background:var(--c);color:var(--ink);border:3px solid var(--ink);border-radius:12px;box-shadow:0 3px 0 var(--ink);min-height:44px}
+#gooFx{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(120,240,70,.55) 75%)}
+#gooFx.show{animation:dmg 1.6s}
 #lockMsg{font-size:calc(var(--u)*4);color:var(--cream);background:var(--ink);border:3px solid var(--pink);border-radius:8px;padding:calc(var(--u)*1) calc(var(--u)*3);opacity:0;transition:opacity .2s}
 #lockMsg.show{opacity:1}
 #unlockMsg{font-size:calc(var(--u)*4.4);color:var(--ink);background:var(--lime);border:3px solid var(--ink);border-radius:8px;padding:calc(var(--u)*.8) calc(var(--u)*3);transform:rotate(-2deg)}
@@ -371,6 +425,11 @@ input[type=range]::-moz-range-thumb{width:calc(var(--u)*9);height:calc(var(--u)*
   <div id="moveHint">MOVE</div><div id="lookHint">SWIPE<br>TO LOOK</div>
   <button id="minimapBtn" aria-label="Map"><canvas id="minimap"></canvas><span>MAP</span></button>
   <button id="zoomBtn" class="rb" aria-label="Zoom"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15 15l6 6" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/><path d="M10 6.5v7M6.5 10h7" stroke="currentColor" stroke-width="2.2"/></svg><span>ZOOM</span></button>
+  <div id="gooFx"></div>
+  <div id="mpList" hidden></div>
+  <div id="feed"></div>
+  <button id="emoteBtn" hidden aria-label="Emotes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="8.5" cy="10" r="1.6" fill="#1d1238"/><circle cx="15.5" cy="10" r="1.6" fill="#1d1238"/><path d="M7.5 14.5q4.5 4 9 0" fill="none" stroke="#1d1238" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <div id="emoteMenu"></div>
   <div id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
   <div id="streak" class="out"></div>
   <div id="banner"><div id="bannerMain"></div><div id="bannerSub" class="out"></div></div>
@@ -386,6 +445,7 @@ input[type=range]::-moz-range-thumb{width:calc(var(--u)*9);height:calc(var(--u)*
   <div><div class="logo"><span id="logo1">MONSTER</span><span id="logo2">BLAST</span></div><div id="menuBest" class="out"></div><div class="menuNet"><span id="netBadge" class="netbadge">…</span><button id="installBtn" class="btn install" hidden><svg viewBox="0 0 24 24"><path d="M12 3v11m0 0-4.5-4.5M12 14l4.5-4.5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>INSTALL GAME</button></div></div>
   <div class="menuBtns">
     <button id="playBtn" class="btn big">PLAY</button>
+    <button id="mpBtn" class="btn pink">MULTIPLAYER</button>
     <button id="weaponsBtn" class="btn">WEAPONS</button>
     <button id="scoresBtn" class="btn">HIGH SCORE</button>
     <button id="settingsBtn" class="btn">SETTINGS</button>
@@ -401,15 +461,72 @@ input[type=range]::-moz-range-thumb{width:calc(var(--u)*9);height:calc(var(--u)*
   </div>
 </section>
 
+<section id="mpScr" class="screen scrim">
+  <div class="panel">
+    <div class="hdr"><button class="btn back" data-back="menu">‹ BACK</button><h2 class="title">MULTIPLAYER</h2></div>
+    <div id="mpLocked" class="offcard"><div class="wart"><svg viewBox="0 0 60 60"><rect x="14" y="26" width="32" height="26" rx="5"/><path d="M20 26v-6a10 10 0 0 1 20 0v6" fill="none" stroke="currentColor" stroke-width="5"/></svg></div><b>ONLINE PLAY IS OFF</b><span></span></div>
+    <div id="mpReady" hidden>
+      <div class="namecard"><span>YOUR PLAYER NAME</span><b id="mpName">Zippy Frog</b><button id="mpReroll" class="btn">NEW NAME</button></div>
+      <div class="row"><button id="mpCreate" class="btn big">CREATE ROOM</button><button id="mpJoin" class="btn big pink">JOIN ROOM</button></div>
+      <p class="maptip" style="text-align:center">Only friends with your room code can join. No chatting — just fun emotes!</p>
+    </div>
+  </div>
+</section>
+
+<section id="mpCreateScr" class="screen scrim">
+  <div class="panel scroll">
+    <div class="hdr"><button class="btn back" data-back="mpScr">‹ BACK</button><h2 class="title">NEW ROOM</h2></div>
+    <div id="mpModes" class="row"></div>
+    <div id="mpWorlds" class="row"></div>
+    <div class="seg" id="mpStage" style="width:min(100%,calc(var(--u)*90))"><button data-v="0">LEVEL 1</button><button data-v="1">LEVEL 2</button><button data-v="2">LEVEL 3 · BOSS</button></div>
+    <button id="mpGo" class="btn big">MAKE ROOM</button>
+    <div id="mpCreateMsg" class="maptip"></div>
+  </div>
+</section>
+
+<section id="keypadScr" class="screen scrim">
+  <div class="panel">
+    <h2 id="kpTitle" class="title" style="font-size:calc(var(--u)*7)">ENTER CODE</h2>
+    <div id="kpDisplay"></div>
+    <div id="kpHint" class="maptip"></div>
+    <div id="kpKeys"><button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="back" class="kx">BACK</button><button data-k="0">0</button><button data-k="del" class="kx">⌫</button></div>
+  </div>
+</section>
+
+<section id="lobbyScr" class="screen scrim">
+  <div class="panel">
+    <div class="lobhead"><span>ROOM CODE</span><b id="lobCode">00000</b><span>Tell your friends these numbers</span></div>
+    <div id="lobInfo"></div>
+    <div id="lobSlots"></div>
+    <div class="row"><button id="lobStart" class="btn big">START!</button><div id="lobWait" class="maptip">Waiting for the host to start…</div><button id="lobLeave" class="btn">LEAVE</button></div>
+  </div>
+</section>
+
+<section id="mpResScr" class="screen scrim">
+  <div class="panel">
+    <h2 id="resTitle" class="title">RESULTS</h2>
+    <div id="resRows"></div>
+    <div class="row"><button id="resAgain" class="btn big">PLAY AGAIN</button><div id="resWait" class="maptip">Waiting for the host…</div><button id="resLeave" class="btn">LEAVE</button></div>
+  </div>
+</section>
+
+<section id="parentsScr" class="screen scrim">
+  <div class="panel scroll">
+    <div class="hdr"><button class="btn back" data-back="settingsScr">‹ BACK</button><h2 class="title">GROWN-UPS</h2></div>
+    <div class="sgrid">
+      <div class="set"><label>ONLINE MULTIPLAYER</label><div class="seg" data-pset="online"><button data-v="true">ON</button><button data-v="false">OFF</button></div><span class="maptip">Private rooms only (5-number codes). No chat, no typed names — kids get random fun names and preset emotes.</span></div>
+      <div class="set"><label>FAMILY BOARD</label><b id="pFamily" class="famcode">NOT SET UP</b><div class="row" style="justify-content:flex-start"><button id="pNewBoard" class="btn sm">NEW BOARD</button><button id="pJoinBoard" class="btn sm">JOIN BOARD</button><button id="pLeaveBoard" class="btn sm">LEAVE</button></div><span class="maptip">Share the 6 numbers with your other devices so everyone's scores show on one board.</span></div>
+      <div class="set"><label>GAME SERVER ADDRESS</label><input id="pServer" type="url" placeholder="https://monster-blast-server.you.workers.dev" autocomplete="off" spellcheck="false"><div class="row" style="justify-content:flex-start"><button id="pTest" class="btn sm">SAVE &amp; TEST</button><span id="pServerMsg" class="maptip"></span></div></div>
+      <div class="set"><label>PIN</label><button id="pChangePin" class="btn sm">CHANGE PIN</button></div>
+    </div>
+  </div>
+</section>
+
 <section id="installScr" class="screen scrim">
   <div class="panel">
     <div class="hdr"><button class="btn back" data-back="menu">‹ BACK</button><h2 class="title">INSTALL THE GAME</h2></div>
-    <div class="isteps">
-      <div class="istep"><b>1</b><span class="iic"><svg viewBox="0 0 24 24"><path d="M12 3v12M12 3 7.5 7.5M12 3l4.5 4.5M5 11v9h14v-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Tap the <b>Share</b> button in Safari</p></div>
-      <div class="istep"><b>2</b><span class="iic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span><p>Choose <b>Add to Home Screen</b></p></div>
-      <div class="istep"><b>3</b><span class="iic"><img src="icons/icon-180.png" alt=""></span><p>Tap the <b>Monster Blast</b> icon to play — even offline!</p></div>
-    </div>
-    <p class="maptip" style="text-align:center">On Android or a computer, look for <b>Install app</b> in the browser menu.</p>
+    <div class="isteps" id="isteps"></div>
+    <p id="inote" class="maptip" style="text-align:center"></p>
   </div>
 </section>
 
@@ -436,6 +553,8 @@ input[type=range]::-moz-range-thumb{width:calc(var(--u)*9);height:calc(var(--u)*
     <div id="sStats" class="stats"></div>
     <div id="sBadges"></div>
     <div id="sWorlds"></div>
+    <h3 class="subttl">FAMILY BOARD</h3>
+    <div id="famBoard"></div>
   </div>
 </section>
 
@@ -452,6 +571,7 @@ input[type=range]::-moz-range-thumb{width:calc(var(--u)*9);height:calc(var(--u)*
       <div class="set"><label>CAMERA</label><div class="seg" data-set="view"><button data-v="first">FIRST</button><button data-v="third">SHOULDER</button><button data-v="far">FAR</button></div></div>
       <div class="set"><label>GRAPHICS</label><div class="seg" data-set="graphics"><button data-v="high">FANCY</button><button data-v="low">FAST</button></div></div>
       <div class="set"><label>MY SHIRT</label><div class="seg swatch" data-set="shirt"><button data-v="blue" style="--s:#2f8fe8"></button><button data-v="red" style="--s:#e8403a"></button><button data-v="green" style="--s:#3fae4a"></button><button data-v="purple" style="--s:#8b5cff"></button></div></div>
+      <div class="set"><label>GROWN-UPS</label><button id="parentsBtn" class="btn" style="font-size:calc(var(--u)*4)">ONLINE &amp; FAMILY SETTINGS</button></div>
       <div class="set"><label>VIBRATION</label><div class="seg" data-set="vibration"><button data-v="true">ON</button><button data-v="false">OFF</button></div></div>
     </div>
   </div>
