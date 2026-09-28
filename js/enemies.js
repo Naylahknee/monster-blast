@@ -13,6 +13,8 @@ export function skinTexture(url) {
   if (!TEX[url]) { const rec = { tex: null, ar: 1, waiting: [] }; TEX[url] = rec; rec.tex = LOADER.load(url, t => { rec.ar = t.image.width / t.image.height; rec.waiting.forEach(f => f()); rec.waiting = []; }); rec.tex.colorSpace = THREE.SRGBColorSpace; rec.tex.anisotropy = 4; }
   return TEX[url];
 }
+// A world lists skins by name; the player's art style (3D or cartoon) picks the folder.
+export function skinURL(G, name) { if (name.includes('/')) return name; return (G.worldDef?.skinBase || '') + (G.settings?.foodArt || '3d') + '/' + name + '.png'; }
 export function skinSprite(url, h, grounded = true) {
   const rec = skinTexture(url);
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: rec.tex, transparent: true, alphaTest: .35 }));
@@ -41,7 +43,7 @@ export class Enemies {
     const G = this.G, def = ENEMIES[type];
     const { group, a } = makeEnemy(type);
     const tint = type === 'boss' ? G.worldDef?.boss?.color : G.worldDef?.tints?.[type]; if (tint) a.mat.color.set(tint);
-    const skin = G.worldDef?.skins?.[type]; if (skin) applySkin(type, a, skin, !!def.fly);
+    const skin = G.worldDef?.skins?.[type]; if (skin) applySkin(type, a, skinURL(G, skin), !!def.fly);
     group.position.set(pos.x, getHeight(pos.x, pos.z), pos.z);
     const hp = def.hp * G.diff.enemyHp * (G.worldDef?.hp || 1) * (type === 'boss' ? 1 : (G.stageHp || 1));
     const e = { type, def, group, a, hp, maxHp: hp, radius: def.radius, cd: def.cd ? def.cd * (.5 + Math.random()) : 1, t: Math.random() * 10, slowT: 0, flashT: 0, spawnT: opts.instant ? 0 : .6, state: 'move', stateT: 0, alive: true, strafe: Math.random() < .5 ? 1 : -1, ang: Math.random() * 6.28, flyY: 3.4, kb: new THREE.Vector3(), baseEm: a.mat.emissive.clone(), yaw: 0 };

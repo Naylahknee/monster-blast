@@ -23,7 +23,7 @@ export async function loadBonus() {
         EXTRA_WAVES[w.id] = EXTRA_WAVES[w.id] || [{ ghost: 2 }, { hopper: 2, bomber: 2 }, { shelly: 2, crystal: 1 }, { crystal: 2, ghost: 3 }, { crystal: 2, shelly: 2, bomber: 3 }];
       }
       BONUS.worlds.push({ id: w.id, name: w.name, css: w0.css, css2: w0.css2, music: w.music || 'cosmic', hp: w.hp || 1.4, bonus: true,
-        waves: w.waves || PW, tips: [w.name + '!', '', '', '', 'FINAL WAVE!'], mission: w.mission, boss: w.boss, tints: w.tints, skins: w0.skins, names: w0.names, friends: w0.friends, crumbs: w.crumbs });
+        waves: w.waves || PW, tips: [w.name + '!', '', '', '', 'FINAL WAVE!'], mission: w.mission, boss: w.boss, tints: w.tints, skins: w0.skins, names: w0.names, skinBase: w0.skinBase, icon: w0.icon, friends: w0.friends, crumbs: w.crumbs });
     }
     BONUS.daily = data.daily || [];
     BONUS.loaded = true; BONUS.online = true;

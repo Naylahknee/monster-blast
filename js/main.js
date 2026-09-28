@@ -9,8 +9,9 @@ import { loadSave, persist } from './save.js';
 import { Audio } from './audio.js';
 import { Input } from './input.js';
 import { buildWorld, disposeWorld, getHeight, resolveCollision } from './world.js';
+import { toonify } from './worlds.js';
 import { FX } from './fx.js';
-import { Enemies, skinSprite } from './enemies.js';
+import { Enemies, skinSprite, skinURL } from './enemies.js';
 import { Weapons } from './weapons.js';
 import { Items } from './items.js';
 import { HUD, WICON } from './hud.js';
@@ -69,11 +70,14 @@ G.haptic = p => { if (G.settings.vibration && navigator.vibrate) try { navigator
 const findWorld = id => WORLDS.find(w => w.id === id) || BONUS.worlds.find(w => w.id === id);
 function loadWorld(id) {
   world = findWorld(id) || WORLDS[0]; G.worldDef = world;
-  if (G.world && G.world.id === id) return;
+  const style = world.skinBase ? (G.settings.foodArt || '3d') : '';
+  if (G.world && G.world.id === id && G.world.style === style) return;
   G.enemies.clear(); G.items.clear(); G.fx.clear();
   disposeWorld(G.scene, G.world);
   G.world = buildWorld(G.scene, G.settings.graphics, id);
-  if (world.friends) addFriends(G.world, world.friends);
+  G.world.style = style;
+  if (world.friends) addFriends(G.world, world.friends.map(n => skinURL(G, n)));
+  if (style === 'toon') toonify(G.world.root);
   if (!world.bonus) { G.progress.lastWorld = id; persist('progress', G.progress); }
 }
 // Friendly drawn characters that stand around a world and cheer (they can't be hit).
@@ -634,8 +638,11 @@ function renderBonus() {
   const el = $('bonusList');
   if (!navigator.onLine || !BONUS.loaded) { el.innerHTML = '<div class="offcard"><div class="wart">' + OFF_ART + '</div><b>CONNECT TO THE INTERNET</b><span>Bonus worlds and the Daily Challenge need a connection. Everything else works offline!</span><button class="btn" data-retry>TRY AGAIN</button></div>'; return; }
   const unlocked = WORLDS.filter((w, i) => worldOpen(i)); const dc = G.todays = todaysChallenge(unlocked); const best = G.progress.daily && dc && G.progress.daily.key === dc.key ? G.progress.daily.best : 0;
-  let h = dc ? `<button class="wcard daily" data-daily style="--c:#ffd43b;--c2:#ff5fa8"><span class="wnum">★</span><span class="wart">${WORLD_ART[dc.world.id] || planetArt(dc.world)}</span><span class="wname">${dc.mod.name}</span><span class="dsub">DAILY · ${dc.world.name}</span><span class="wstat">${best ? 'BEST ' + best.toLocaleString() : 'PLAY'}</span></button>` : '';
-  h += BONUS.worlds.map(w => { const sd = (G.progress.stages || {})[w.id] || 0; return `<span class="wpath on"></span><button class="wcard" data-bonus="${w.id}" style="--c:${w.css};--c2:${w.css2}"><span class="wnum">B</span><span class="wart">${WORLD_ART[w.id] || planetArt(w)}</span><span class="wname">${w.name}</span><span class="wstat">${sd >= 3 ? '★ CLEARED' : sd ? 'LEVEL ' + (sd + 1) + '/3' : 'PLAY'}</span><span class="wstars">${[0, 1, 2].map(k => `<i class="${k < sd ? 'on' : ''}">★</i>`).join('')}</span></button>`; }).join('');
+  const art = G.settings.foodArt || '3d', ab = (k, l) => `<button data-art="${k}" style="padding:6px 14px;border-radius:10px;font:inherit;${art === k ? 'background:#ffd43b;color:#1d1238' : 'background:transparent;color:#fff'}">${l}</button>`;
+  const hasFood = BONUS.worlds.some(w => w.skinBase);
+  let h = hasFood ? `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-right:14px;color:#fff;font-size:14px">FOOD WORLD ART<div style="display:flex;gap:4px;background:#1d1238;padding:4px;border-radius:12px">${ab('3d', '3D')}${ab('toon', 'CARTOON')}</div></div>` : '';
+  h += dc ? `<button class="wcard daily" data-daily style="--c:#ffd43b;--c2:#ff5fa8"><span class="wnum">★</span><span class="wart">${WORLD_ART[dc.world.id] || planetArt(dc.world)}</span><span class="wname">${dc.mod.name}</span><span class="dsub">DAILY · ${dc.world.name}</span><span class="wstat">${best ? 'BEST ' + best.toLocaleString() : 'PLAY'}</span></button>` : '';
+  h += BONUS.worlds.map(w => { const sd = (G.progress.stages || {})[w.id] || 0; return `<span class="wpath on"></span><button class="wcard" data-bonus="${w.id}" style="--c:${w.css};--c2:${w.css2}"><span class="wnum">B</span><span class="wart">${w.icon ? `<img src="${skinURL({ worldDef: w, settings: G.settings }, w.icon)}" style="height:100%;max-width:100%;object-fit:contain">` : WORLD_ART[w.id] || planetArt(w)}</span><span class="wname">${w.name}</span><span class="wstat">${sd >= 3 ? '★ CLEARED' : sd ? 'LEVEL ' + (sd + 1) + '/3' : 'PLAY'}</span><span class="wstars">${[0, 1, 2].map(k => `<i class="${k < sd ? 'on' : ''}">★</i>`).join('')}</span></button>`; }).join('');
   el.innerHTML = h;
 }
 WORLD_ART.candy = '<svg viewBox="0 0 60 60"><circle cx="30" cy="22" r="15"/><path d="M30 37v20" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M30 22m-8 0a8 8 0 1 1 8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>';
@@ -679,6 +686,7 @@ function wireOnline() {
     if (e.target.closest('[data-retry]')) { G.audio.play('click'); refreshOnline(); return; }
     const d = e.target.closest('[data-daily]'), bw = e.target.closest('[data-bonus]');
     if (bw) { G.audio.play('click'); renderStages(bw.dataset.bonus); return; }
+    const ar = e.target.closest('[data-art]'); if (ar) { G.audio.play('click'); G.settings.foodArt = ar.dataset.art; persist('settings', G.settings); renderBonus(); return; }
     if (d && G.todays) { const dc = G.todays; G.audio.play('click'); $('loading').classList.remove('gone'); $('loadMsg').textContent = 'Loading the Daily Challenge…'; setTimeout(() => { loadWorld(dc.world.id); $('loading').classList.add('gone'); startRun({ stage: dc.stage, daily: { key: dc.key, mod: dc.mod } }); }, 30); }
   });
   installState(); netState(); refreshOnline();
