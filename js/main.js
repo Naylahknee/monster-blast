@@ -10,7 +10,7 @@ import { Audio } from './audio.js';
 import { Input } from './input.js';
 import { buildWorld, disposeWorld, getHeight, resolveCollision } from './world.js';
 import { FX } from './fx.js';
-import { Enemies } from './enemies.js';
+import { Enemies, skinSprite } from './enemies.js';
 import { Weapons } from './weapons.js';
 import { Items } from './items.js';
 import { HUD, WICON } from './hud.js';
@@ -73,7 +73,20 @@ function loadWorld(id) {
   G.enemies.clear(); G.items.clear(); G.fx.clear();
   disposeWorld(G.scene, G.world);
   G.world = buildWorld(G.scene, G.settings.graphics, id);
+  if (world.friends) addFriends(G.world, world.friends);
   if (!world.bonus) { G.progress.lastWorld = id; persist('progress', G.progress); }
+}
+// Friendly drawn characters that stand around a world and cheer (they can't be hit).
+function addFriends(W, list) {
+  let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const grp = new THREE.Group(); W.root.add(grp);
+  for (let i = 0; i < 14; i++) {
+    const url = list[i % list.length], an = rnd() * Math.PI * 2, r = 12 + rnd() * 44;
+    const x = Math.cos(an) * r, z = Math.sin(an) * r;
+    if (W.colliders.some(c => Math.hypot(c.x - x, c.z - z) < c.r + 1.5)) continue;
+    const s = skinSprite(url, 1.8 + rnd() * .8); s.position.set(x, getHeight(x, z), z); grp.add(s);
+    const ph = rnd() * 6, base = s.position.y; s.onBeforeRender = () => { s.position.y = base + Math.abs(Math.sin(G.time * 3 + ph)) * .35; };
+  }
 }
 G.level = () => levelFor(G.progress.xp || 0);
 function checkUnlocks(announce) {
@@ -484,7 +497,7 @@ function openMap() {
   $('mapWorld').textContent = world.name; showScreen('mapScr'); setTimeout(() => G.map.drawFull(), 40); G.audio.play('click');
 }
 function closeMap() { if (G.state !== 'map') return; G.state = 'playing'; G.input.enabled = true; G.input.reset(); showScreen(null); }
-G.onFirstSeen = type => { if (!G.seen || G.seen.has(type) || G.state !== 'playing') return; G.seen.add(type); const n = ENEMIES[type].name; if (n) setTimeout(() => G.hud.toast('NEW MONSTER: ' + n + '!'), 400); };
+G.onFirstSeen = type => { if (!G.seen || G.seen.has(type) || G.state !== 'playing') return; G.seen.add(type); const n = world?.names?.[type] || ENEMIES[type].name; if (n) setTimeout(() => G.hud.toast('NEW MONSTER: ' + n + '!'), 400); };
 function pause() {
   if (G.state !== 'playing') return;
   G.state = 'paused'; G.input.enabled = false; G.input.reset(); if (document.pointerLockElement) document.exitPointerLock();

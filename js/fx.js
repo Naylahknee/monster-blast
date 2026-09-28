@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { STAR_G } from './models.js';
+import { VFX } from './vfx.js';
 
 class Particles {
   constructor(scene, geo, n, additive = false) {
@@ -50,6 +51,7 @@ export class FX {
     this.popEl = document.getElementById('popups');
     for (let i = 0; i < 18; i++) { const el = document.createElement('div'); el.className = 'pop out'; this.popEl.appendChild(el); this.pops.push({ el, t: 0, pos: new THREE.Vector3() }); }
     this.pi = 0; this.v = new THREE.Vector3();
+    this.vfx = new VFX(scene, camera);
   }
   burst(pos, color, n = 14, speed = 6, size = .14, grav = 12, life = .7) { for (let i = 0; i < n; i++) this.bits.emit(pos, color, speed, size, life, grav); }
   sparks(pos, color, n = 6, speed = 5, size = .1) { for (let i = 0; i < n; i++) this.glow.emit(pos, color, speed, size, .35, 0); }
@@ -62,9 +64,9 @@ export class FX {
     b.l.geometry.attributes.position.needsUpdate = true; b.l.material.color.set(color); b.l.visible = true; b.t = .14;
   }
   popup(text, pos, cls = '') { const p = this.pops[this.pi]; this.pi = (this.pi + 1) % this.pops.length; p.el.textContent = text; p.el.className = 'pop out ' + cls; p.pos.copy(pos); p.t = 1; p.el.style.display = 'block'; }
-  clear() { this.pops.forEach(p => { p.t = 0; p.el.style.display = 'none'; }); this.rings.forEach(r => r.m.visible = false); this.beams.forEach(b => b.l.visible = false); }
+  clear() { this.vfx.clear(); this.pops.forEach(p => { p.t = 0; p.el.style.display = 'none'; }); this.rings.forEach(r => r.m.visible = false); this.beams.forEach(b => b.l.visible = false); }
   update(dt) {
-    this.bits.update(dt); this.glow.update(dt); this.stars.update(dt);
+    this.bits.update(dt); this.glow.update(dt); this.stars.update(dt); this.vfx.update(dt);
     for (const r of this.rings) { if (!r.m.visible) continue; r.t += dt; const k = r.t / r.dur; if (k >= 1) { r.m.visible = false; continue; } const s = .3 + r.maxR * k; r.m.scale.set(s, 1, s); r.m.material.opacity = (1 - k) * .9; }
     for (const b of this.beams) { if (!b.l.visible) continue; b.t -= dt; b.l.material.opacity = Math.max(0, b.t / .14); if (b.t <= 0) b.l.visible = false; }
     const W = innerWidth, H = innerHeight;

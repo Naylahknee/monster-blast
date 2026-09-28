@@ -6,6 +6,29 @@ import { getHeight, resolveCollision } from './world.js';
 const V = new THREE.Vector3(), V2 = new THREE.Vector3();
 const SHELL_G = new THREE.SphereGeometry(1, 24, 16);
 
+// ---- drawing "skins": a world can swap an enemy's 3D body for a hand-drawn picture ----
+const SKIN_H = { slime: 1.9, mini: 1.1, chomper: 2.1, spitter: 2.4, bat: 1.9, tank: 3.4, ghost: 2.2, hopper: 1.9, bomber: 1.5, shelly: 2.2, crystal: 2.8, shard: 1.2, boss: 8 };
+const TEX = {}, LOADER = new THREE.TextureLoader();
+export function skinTexture(url) {
+  if (!TEX[url]) { const rec = { tex: null, ar: 1, waiting: [] }; TEX[url] = rec; rec.tex = LOADER.load(url, t => { rec.ar = t.image.width / t.image.height; rec.waiting.forEach(f => f()); rec.waiting = []; }); rec.tex.colorSpace = THREE.SRGBColorSpace; rec.tex.anisotropy = 4; }
+  return TEX[url];
+}
+export function skinSprite(url, h, grounded = true) {
+  const rec = skinTexture(url);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: rec.tex, transparent: true, alphaTest: .35 }));
+  s.center.set(.5, grounded ? 0 : .5);
+  const size = () => s.scale.set(h * rec.ar, h, 1); size(); if (!rec.tex.image) rec.waiting.push(size);
+  return s;
+}
+function applySkin(type, a, url, fly) {
+  a.inner.traverse(o => { if (o.isMesh) o.visible = false; });
+  const s = skinSprite(url, SKIN_H[type] || 2, !fly); if (fly) s.position.y = 0; a.inner.add(s); a.sprite = s;
+}
+function tintSkin(e) {
+  const s = e.a.sprite; if (!s) return; const c = s.material.color;
+  if (e.flashT > 0) c.setRGB(1, .45, .45); else if (e.frozenT > 0) c.setRGB(.6, .85, 1); else if (e.trapT > 0) c.setRGB(.85, .7, 1); else if (e.slowT > 0) c.setRGB(.7, 1, .6); else c.setRGB(1, 1, 1);
+}
+
 export class Enemies {
   constructor(G) {
     this.G = G; this.list = [];
@@ -18,6 +41,7 @@ export class Enemies {
     const G = this.G, def = ENEMIES[type];
     const { group, a } = makeEnemy(type);
     const tint = type === 'boss' ? G.worldDef?.boss?.color : G.worldDef?.tints?.[type]; if (tint) a.mat.color.set(tint);
+    const skin = G.worldDef?.skins?.[type]; if (skin) applySkin(type, a, skin, !!def.fly);
     group.position.set(pos.x, getHeight(pos.x, pos.z), pos.z);
     const hp = def.hp * G.diff.enemyHp * (G.worldDef?.hp || 1) * (type === 'boss' ? 1 : (G.stageHp || 1));
     const e = { type, def, group, a, hp, maxHp: hp, radius: def.radius, cd: def.cd ? def.cd * (.5 + Math.random()) : 1, t: Math.random() * 10, slowT: 0, flashT: 0, spawnT: opts.instant ? 0 : .6, state: 'move', stateT: 0, alive: true, strafe: Math.random() < .5 ? 1 : -1, ang: Math.random() * 6.28, flyY: 3.4, kb: new THREE.Vector3(), baseEm: a.mat.emissive.clone(), yaw: 0 };
@@ -27,6 +51,7 @@ export class Enemies {
     if (type === 'hopper') { e.hopT = .6 + Math.random(); e.vy = 0; e.air = false; }
     if (def.hides) e.hideT = 2 + Math.random() * 2;
     if (G.onFirstSeen) G.onFirstSeen(type);
+    if (type === 'boss') G.fx.vfx.attach(e, o => e.alive && e.group.parent ? this.center(e, o) : null, { rate: 18, color: [0xffe14a, 0xff5fa8, 0xffffff], size: .45, speed: 2.5, dur: 1, spread: 5, up: 1.2 });
     this.nextNid = (this.nextNid || 0) + 1; e.nid = opts.nid ?? this.nextNid;
     if (type === 'boss') { e.state = 'intro'; e.stateT = 3.2; e.attackIdx = 0; e.shake = 0; group.position.y -= 7; }
     if (e.spawnT > 0) group.scale.setScalar(.01);
@@ -156,9 +181,20 @@ export class Enemies {
       else resolveCollision({ colliders: [], boxes: [], R: G.world.R }, g.position, 0);
       const ty = Math.atan2(dx, dz); let d = ty - e.yaw; d = Math.atan2(Math.sin(d), Math.cos(d)); e.yaw += d * Math.min(1, dt * 8); g.rotation.y = e.yaw;
       a.mat.emissive.copy(e.flashT > 0 ? V.set(.9, .9, .9) : e.slowT > 0 ? V.set(.2, .5, .1) : e.baseEm);
+      tintSkin(e); this.status(e);
     }
     this.list = this.list.filter(e => e.alive || e.group.parent);
     this.updateShots(dt);
+  }
+
+  // Particle emitters attached to an enemy while it is slowed (goo drips) or frozen (snowflakes).
+  status(e) {
+    const vfx = this.G.fx.vfx, st = e.frozenT > 0 ? 'ice' : e.slowT > 0 ? 'goo' : null;
+    if (st === e.fxState) return; e.fxState = st;
+    const key = 'st' + e.nid; if (!st) return vfx.detach(key);
+    const get = o => e.alive && e.fxState === st ? this.center(e, o) : null;
+    if (st === 'goo') vfx.attach(key, get, { rate: 10, color: [0x8ff04a, 0x6ee85a], size: .3, speed: .6, dur: .8, grav: 6, up: 0, spread: e.radius * 1.4 });
+    else vfx.attach(key, get, { rate: 14, color: [0xffffff, 0xc8f2ff], size: .28, speed: .8, dur: 1, grav: -.5, up: .6, spread: e.radius * 1.6 });
   }
 
   stuck(e, dt) {
@@ -177,6 +213,7 @@ export class Enemies {
       if (e.trapT <= 0) { a.inner.rotation.z = 0; G.fx.burst(this.center(e, V), 0xe0c4ff, 14, 4, .12, 4, .5); G.fx.ring(V, 0xffffff, 2, .3); G.audio.play('bubble'); }
     }
     if (e.flashT > 0) a.mat.emissive.setRGB(.9, .9, .9);
+    tintSkin(e); this.status(e);
     e.shell.visible = e.frozenT > 0 || e.trapT > 0;
   }
 
@@ -287,6 +324,9 @@ export class Enemies {
     G.fx.starBurst(V, big ? 12 : 5, big ? 8 : 5);
     G.fx.ring(V.clone().setY(e.group.position.y + .1), e.def.color, big ? 8 : 3, .45);
     G.fx.sparks(V, 0xffffff, 8, 6, .2);
+    const vfx = G.fx.vfx; e.fxState = null; vfx.detach('st' + e.nid); vfx.detach(e);
+    vfx.flip(big ? 'boom' : 'pow', V, big ? 9 : 1.5 + e.radius, big ? .9 : .45); vfx.flip('smoke', V.clone().setY(V.y + .3), big ? 8 : 1.2 + e.radius * 1.5, .8);
+    if (G.worldDef?.crumbs) vfx.confetti(V, G.worldDef.crumbs, big ? 40 : 14);
     G.scene.remove(e.group);
     if (silent) return;
     if (e.type === 'bomber') this.explode(e, false);

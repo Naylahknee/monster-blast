@@ -98,6 +98,7 @@ export class Weapons {
     this.cd = 1 / d.rate; if (d.clip !== Infinity) { w.clip--; G.hud.weaponChanged(); }
     this.kick = 1; G.audio.play(d.sfx); G.haptic(6); G.body.kick = 1;
     const muzzle = this.muzzle(V);
+    G.fx.vfx.flip('flash', muzzle, d.kind === 'boom' || d.kind === 'mega' ? .9 : .55, .09, d.color);
     const aim = this.aimPoint(target, V2);
     const mul = G.effects.damage > 0 ? 2 : 1;
     if (d.kind === 'beam') {
@@ -105,7 +106,8 @@ export class Weapons {
       if (!hit) { G.camera.getWorldDirection(V3); hit = this.raycast(G.aimOrigin, V3, d.range); }
       if (!hit && G.net?.mode === 'tag') { const R = segHitRemote(G.net, G.aimOrigin, V4.copy(G.aimOrigin).addScaledVector(V3, d.range), .2); if (R) { G.mpSplat(R); G.fx.beam([muzzle.clone(), R.pos.clone().setY(R.pos.y + 1)], d.color); return; } }
       const end = hit ? G.enemies.center(hit, new THREE.Vector3()) : aim.clone();
-      G.fx.beam([muzzle.clone(), end], d.color); G.fx.sparks(end, d.color, 5, 5, .15);
+      G.fx.beam([muzzle.clone(), end], d.color); G.fx.sparks(end, d.color, 5, 5, .15); G.fx.vfx.beam(muzzle, end, d.color, d.freeze ? .45 : .3);
+      if (hit) G.fx.vfx.flip(d.freeze ? 'smoke' : 'pow', end, d.freeze ? 1 : 1.1, .35, d.freeze ? 0xc8f2ff : undefined);
       if (d.freeze) { G.fx.beam([muzzle.clone(), end], 0xffffff); if (Math.random() < .5) G.fx.burst(end, 0xdff8ff, 3, 3, .1, 4, .4); }
       if (hit) {
         const done = new Set([hit]); let fromP = end.clone();
@@ -114,7 +116,7 @@ export class Weapons {
           let best = null, bd = d.chainRange;
           for (const e of G.enemies.list) { if (!e.alive || done.has(e)) continue; const dd = G.enemies.center(e, V3).distanceTo(fromP); if (dd < bd) { bd = dd; best = e; } }
           if (!best) break;
-          const p = G.enemies.center(best, new THREE.Vector3()); G.fx.beam([fromP, p], 0xffffff); G.fx.sparks(p, d.color, 4, 4, .12);
+          const p = G.enemies.center(best, new THREE.Vector3()); G.fx.beam([fromP, p], 0xffffff); G.fx.vfx.beam(fromP, p, d.color, .25); G.fx.sparks(p, d.color, 4, 4, .12);
           G.enemies.damage(best, d.damage * .7 * mul, { from: fromP, kb: 2 }); done.add(best); fromP = p;
         }
       }
@@ -134,6 +136,7 @@ export class Weapons {
       p.m.material.color.set(col); p.m.material.opacity = d.kind === 'bubble' ? .55 : 1;
       p.m.scale.set(d.size, d.size, d.kind === 'bolt' || d.kind === 'mega' ? d.size * 5 : d.size);
       p.m.visible = true;
+      if (d.kind !== 'bubble') G.fx.vfx.trail(p, col, Math.max(.08, (d.size || .1) * (d.kind === 'mega' ? 1.6 : 1.1)));
     }
   }
 
@@ -186,12 +189,12 @@ export class Weapons {
     if (d.splash) {
       const R = d.splash;
       for (const e of G.enemies.list) { if (!e.alive) continue; const dist = G.enemies.center(e, V2).distanceTo(pos) - e.radius; if (dist < R) { const k = e === hit ? 1 : Math.max(.35, 1 - dist / R); G.enemies.damage(e, d.damage * k * p.mul, { slow: d.slow, from: pos, kb: d.kind === 'boom' ? 9 : 3, splashHit: d.kind === 'boom' }); } }
-      if (d.kind === 'boom') { G.fx.burst(pos, 0xff8a2a, 26, 9, .25, 8, .7); G.fx.burst(pos, 0xffe14a, 14, 6, .2, 4, .6); G.fx.sparks(pos, 0xffe14a, 10, 8, .5); G.fx.ring(pos, 0xff8a2a, R * 1.3, .45); G.audio.play('explode'); G.shake = Math.max(G.shake, .35); G.haptic(20); }
-      else if (d.kind === 'goo') { G.fx.burst(pos, 0x8ff04a, 16, 5, .18, 12, .7); G.fx.ring(pos, 0x8ff04a, R * 1.2, .35); G.audio.play('hit'); }
-      else if (d.kind === 'bounce') { G.fx.burst(pos, d.color, 16, 6, .16, 8, .5); G.fx.ring(pos, d.color, R * 1.4, .3); G.fx.starBurst(pos, 3, 4); G.audio.play('pop'); }
+      if (d.kind === 'boom') { G.fx.vfx.flip('boom', pos, R * 1.7, .6); G.fx.vfx.flip('smoke', pos.clone().setY(pos.y + .6), R * 1.5, .9); G.fx.burst(pos, 0xff8a2a, 26, 9, .25, 8, .7); G.fx.burst(pos, 0xffe14a, 14, 6, .2, 4, .6); G.fx.sparks(pos, 0xffe14a, 10, 8, .5); G.fx.ring(pos, 0xff8a2a, R * 1.3, .45); G.audio.play('explode'); G.shake = Math.max(G.shake, .35); G.haptic(20); }
+      else if (d.kind === 'goo') { G.fx.vfx.flip('splat', pos, R * 1.1, .5); G.fx.burst(pos, 0x8ff04a, 16, 5, .18, 12, .7); G.fx.ring(pos, 0x8ff04a, R * 1.2, .35); G.audio.play('hit'); }
+      else if (d.kind === 'bounce') { G.fx.vfx.flip('pow', pos, 1.4, .4); G.fx.burst(pos, d.color, 16, 6, .16, 8, .5); G.fx.ring(pos, d.color, R * 1.4, .3); G.fx.starBurst(pos, 3, 4); G.audio.play('pop'); }
       else { G.fx.burst(pos, RAINBOW[Math.floor(Math.random() * 5)], 14, 7, .16, 6, .5); G.fx.ring(pos, 0xff4fd8, R * 1.3, .3); G.fx.starBurst(pos, 2, 4); }
       if (hit) G.hud.hitMark();
-    } else if (hit) { G.enemies.damage(hit, d.damage * p.mul, { from: G.player.pos, kb: d.pellets ? 1.2 : 2.5 }); G.fx.sparks(pos, d.color, d.pellets ? 3 : 6, 5, .15); if (!d.pellets || Math.random() < .3) G.audio.play('hit'); G.hud.hitMark(); }
+    } else if (hit) { if (!d.pellets || Math.random() < .35) G.fx.vfx.flip('pow', pos, d.pellets ? .8 : 1.1, .35); G.enemies.damage(hit, d.damage * p.mul, { from: G.player.pos, kb: d.pellets ? 1.2 : 2.5 }); G.fx.sparks(pos, d.color, d.pellets ? 3 : 6, 5, .15); if (!d.pellets || Math.random() < .3) G.audio.play('hit'); G.hud.hitMark(); }
     else G.fx.sparks(pos, d.color, 4, 3, .1);
   }
 }
