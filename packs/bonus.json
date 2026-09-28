@@ -3,51 +3,39 @@
   "note": "Online bonus content. This file is only loaded when the device is connected to the internet. Add worlds or daily challenges here without updating the app.",
   "worlds": [
     {
-      "id": "snack",
-      "name": "SNACK ATTACK",
+      "id": "sweetsprings",
+      "name": "SWEET SPRINGS",
       "css": "#ff8ad0",
       "css2": "#6a3aa0",
       "music": "water",
-      "hp": 1.2,
+      "hp": 1.1,
       "theme": {
-        "sky": "#fff0fa",
-        "skyTop": "#9fdcff",
+        "food": true,
+        "region": "sweet",
+        "sky": "#ffe6f6",
+        "skyTop": "#6cc8ff",
         "fog": [
-          "#ffe8f6",
-          60,
-          190
+          "#ffe6f6",
+          70,
+          210
         ],
         "hemi": [
           "#ffffff",
           "#ffc8e8",
-          2.2
+          2.1
         ],
         "sun": [
           "#fffaf0",
-          2.6
+          2.8
         ],
         "g": [
-          "#ffc4e6",
-          "#ffeab0",
-          "#b8ecff"
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
         ],
         "gravity": 0.9,
         "rock": [
-          "#ff8ad0",
-          "#8ff04a",
-          "#ffd43b",
-          "#45d7ff",
-          "#b05cff"
-        ],
-        "cry": [
-          "#ffffff",
-          "#ffc8e8",
-          "#fff0a0"
-        ],
-        "spire": [
-          "#ff5fa8",
-          "#ffffff",
-          "#45d7ff"
+          "#ffffff"
         ],
         "motes": "#ffffff",
         "lander": "pylon",
@@ -62,7 +50,301 @@
         "done": "SPRINKLES SAVED!"
       },
       "boss": {
-        "name": "BIG BAD BANANA",
+        "name": "CAPTAIN CUPCAKE",
+        "color": "#ff9ad0"
+      },
+      "tints": {},
+      "crumbs": [
+        "#ff8ad0",
+        "#ffe14a",
+        "#8ff04a",
+        "#45d7ff",
+        "#b05cff",
+        "#ff8a2a"
+      ],
+      "skinBase": "packs/food/",
+      "icon": "icecream",
+      "skins": {
+        "slime": "cupcake",
+        "mini": "banana-silly",
+        "chomper": "banana-boxing",
+        "spitter": "chips",
+        "bat": "icecream",
+        "tank": "chocolate",
+        "ghost": "grapes",
+        "hopper": "carrot",
+        "bomber": "apple",
+        "shelly": "broccoli",
+        "crystal": "banana-mad",
+        "shard": "banana-confused",
+        "boss": "cupcake"
+      },
+      "names": {
+        "slime": "CUPCAKE",
+        "mini": "SILLY BANANA",
+        "chomper": "BOXING BANANA",
+        "spitter": "CHIP BAG",
+        "bat": "ICE CREAM",
+        "tank": "CHOCOLATE BAR",
+        "ghost": "GRAPE GANG",
+        "hopper": "CARROT",
+        "bomber": "APPLE",
+        "shelly": "BROCCOLI",
+        "crystal": "ANGRY BANANA",
+        "shard": "CONFUSED BANANA"
+      },
+      "friends": [
+        "banana-happy",
+        "banana-excited",
+        "banana-love",
+        "banana-sleepy"
+      ]
+    },
+    {
+      "id": "crunchcanyon",
+      "name": "CRUNCH CANYON",
+      "css": "#ffb52e",
+      "css2": "#8a3a10",
+      "music": "volcano",
+      "hp": 1.25,
+      "theme": {
+        "food": true,
+        "region": "crunch",
+        "sky": "#fff0c8",
+        "skyTop": "#4ab8ff",
+        "fog": [
+          "#ffe8b8",
+          70,
+          210
+        ],
+        "hemi": [
+          "#fff8e0",
+          "#e8a040",
+          1.9
+        ],
+        "sun": [
+          "#fffaf0",
+          2.8
+        ],
+        "g": [
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
+        ],
+        "gravity": 0.9,
+        "rock": [
+          "#ffffff"
+        ],
+        "motes": "#ffffff",
+        "lander": "pylon",
+        "rug": 1
+      },
+      "mission": {
+        "name": "HIDDEN TREASURE",
+        "hint": "Find 3 hidden treasure gems",
+        "item": "gem",
+        "short": "TREASURE",
+        "count": 3,
+        "done": "TREASURE FOUND!"
+      },
+      "boss": {
+        "name": "KING CHIP",
+        "color": "#ff5a1f"
+      },
+      "tints": {},
+      "crumbs": [
+        "#ff8ad0",
+        "#ffe14a",
+        "#8ff04a",
+        "#45d7ff",
+        "#b05cff",
+        "#ff8a2a"
+      ],
+      "skinBase": "packs/food/",
+      "icon": "chips",
+      "skins": {
+        "slime": "cupcake",
+        "mini": "banana-silly",
+        "chomper": "banana-boxing",
+        "spitter": "chips",
+        "bat": "icecream",
+        "tank": "chocolate",
+        "ghost": "grapes",
+        "hopper": "carrot",
+        "bomber": "apple",
+        "shelly": "broccoli",
+        "crystal": "banana-mad",
+        "shard": "banana-confused",
+        "boss": "chips"
+      },
+      "names": {
+        "slime": "CUPCAKE",
+        "mini": "SILLY BANANA",
+        "chomper": "BOXING BANANA",
+        "spitter": "CHIP BAG",
+        "bat": "ICE CREAM",
+        "tank": "CHOCOLATE BAR",
+        "ghost": "GRAPE GANG",
+        "hopper": "CARROT",
+        "bomber": "APPLE",
+        "shelly": "BROCCOLI",
+        "crystal": "ANGRY BANANA",
+        "shard": "CONFUSED BANANA"
+      },
+      "friends": [
+        "banana-happy",
+        "banana-excited",
+        "banana-love",
+        "banana-sleepy"
+      ]
+    },
+    {
+      "id": "chocofalls",
+      "name": "CHOCOLATE FALLS",
+      "css": "#a86a3a",
+      "css2": "#3a1a08",
+      "music": "cosmic",
+      "hp": 1.35,
+      "theme": {
+        "food": true,
+        "region": "choco",
+        "sky": "#ffd0e8",
+        "skyTop": "#8a6ae8",
+        "fog": [
+          "#e8c0d8",
+          60,
+          200
+        ],
+        "hemi": [
+          "#ffe8f0",
+          "#6a3a1e",
+          1.9
+        ],
+        "sun": [
+          "#fffaf0",
+          2.8
+        ],
+        "g": [
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
+        ],
+        "gravity": 0.9,
+        "rock": [
+          "#ffffff"
+        ],
+        "motes": "#ffffff",
+        "lander": "pylon",
+        "rug": 1
+      },
+      "mission": {
+        "name": "GOLDEN WRAPPERS",
+        "hint": "Find 3 golden wrappers",
+        "item": "battery",
+        "short": "WRAPPERS",
+        "count": 3,
+        "done": "WRAPPERS FOUND!"
+      },
+      "boss": {
+        "name": "THE CHOCO BOSS",
+        "color": "#6a3a1e"
+      },
+      "tints": {},
+      "crumbs": [
+        "#ff8ad0",
+        "#ffe14a",
+        "#8ff04a",
+        "#45d7ff",
+        "#b05cff",
+        "#ff8a2a"
+      ],
+      "skinBase": "packs/food/",
+      "icon": "chocolate",
+      "skins": {
+        "slime": "cupcake",
+        "mini": "banana-silly",
+        "chomper": "banana-boxing",
+        "spitter": "chips",
+        "bat": "icecream",
+        "tank": "chocolate",
+        "ghost": "grapes",
+        "hopper": "carrot",
+        "bomber": "apple",
+        "shelly": "broccoli",
+        "crystal": "banana-mad",
+        "shard": "banana-confused",
+        "boss": "chocolate"
+      },
+      "names": {
+        "slime": "CUPCAKE",
+        "mini": "SILLY BANANA",
+        "chomper": "BOXING BANANA",
+        "spitter": "CHIP BAG",
+        "bat": "ICE CREAM",
+        "tank": "CHOCOLATE BAR",
+        "ghost": "GRAPE GANG",
+        "hopper": "CARROT",
+        "bomber": "APPLE",
+        "shelly": "BROCCOLI",
+        "crystal": "ANGRY BANANA",
+        "shard": "CONFUSED BANANA"
+      },
+      "friends": [
+        "banana-happy",
+        "banana-excited",
+        "banana-love",
+        "banana-sleepy"
+      ]
+    },
+    {
+      "id": "produce",
+      "name": "PRODUCE PLAINS",
+      "css": "#6ad84a",
+      "css2": "#1a6a2a",
+      "music": "woods",
+      "hp": 1.45,
+      "theme": {
+        "food": true,
+        "region": "produce",
+        "sky": "#e8f8ff",
+        "skyTop": "#4ab0ff",
+        "fog": [
+          "#e0f4ff",
+          70,
+          220
+        ],
+        "hemi": [
+          "#ffffff",
+          "#6ac83a",
+          1.9
+        ],
+        "sun": [
+          "#fffaf0",
+          2.8
+        ],
+        "g": [
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
+        ],
+        "gravity": 0.9,
+        "rock": [
+          "#ffffff"
+        ],
+        "motes": "#ffffff",
+        "lander": "pylon",
+        "rug": 1
+      },
+      "mission": {
+        "name": "GOLDEN SEEDS",
+        "hint": "Find 3 golden seeds for the farm",
+        "item": "orb",
+        "short": "SEEDS",
+        "count": 3,
+        "done": "FARM SAVED!"
+      },
+      "boss": {
+        "name": "BIG BOXING BANANA",
         "color": "#ffe14a"
       },
       "tints": {},
@@ -74,40 +356,43 @@
         "#b05cff",
         "#ff8a2a"
       ],
+      "skinBase": "packs/food/",
+      "icon": "broccoli",
       "skins": {
-        "slime": "packs/snack/cupcake.png",
-        "mini": "packs/snack/muffin.png",
-        "chomper": "packs/snack/pizza.png",
-        "spitter": "packs/snack/chips.png",
-        "bat": "packs/snack/icecream.png",
-        "tank": "packs/snack/chocolate.png",
-        "ghost": "packs/snack/grapes.png",
-        "hopper": "packs/snack/carrot.png",
-        "bomber": "packs/snack/apple.png",
-        "shelly": "packs/snack/broccoli.png",
-        "crystal": "packs/snack/banana-mad.png",
-        "shard": "packs/snack/banana-mad.png",
-        "boss": "packs/snack/banana-mad.png"
+        "slime": "cupcake",
+        "mini": "banana-silly",
+        "chomper": "banana-boxing",
+        "spitter": "chips",
+        "bat": "icecream",
+        "tank": "chocolate",
+        "ghost": "grapes",
+        "hopper": "carrot",
+        "bomber": "apple",
+        "shelly": "broccoli",
+        "crystal": "banana-mad",
+        "shard": "banana-confused",
+        "boss": "banana-boxing"
+      },
+      "names": {
+        "slime": "CUPCAKE",
+        "mini": "SILLY BANANA",
+        "chomper": "BOXING BANANA",
+        "spitter": "CHIP BAG",
+        "bat": "ICE CREAM",
+        "tank": "CHOCOLATE BAR",
+        "ghost": "GRAPE GANG",
+        "hopper": "CARROT",
+        "bomber": "APPLE",
+        "shelly": "BROCCOLI",
+        "crystal": "ANGRY BANANA",
+        "shard": "CONFUSED BANANA"
       },
       "friends": [
-        "packs/snack/banana-love.png",
-        "packs/snack/banana-silly.png",
-        "packs/snack/banana-yay.png"
-      ],
-      "names": {
-        "slime": "CUPCAKE CRUSHER",
-        "mini": "MINI MUFFIN",
-        "chomper": "PIZZA PUNCHER",
-        "spitter": "CHIP BAG",
-        "bat": "FLYING SCOOP",
-        "tank": "CHOCO BLOCK",
-        "ghost": "GRAPE BUNCH",
-        "hopper": "CARROT HOPPER",
-        "bomber": "APPLE BOMB",
-        "shelly": "BROCCOLI BUDDY",
-        "crystal": "GRUMPY BANANA",
-        "shard": "BANANA BIT"
-      }
+        "banana-happy",
+        "banana-excited",
+        "banana-love",
+        "banana-sleepy"
+      ]
     },
     {
       "id": "candy",
