@@ -1,6 +1,6 @@
 // Offline-first service worker. Everything needed to play the 13 main worlds is cached on install.
 // Online-only extras (packs/) always come from the network so new bonus content shows up without an app update.
-const VERSION = 'mb-v1.9.0';
+const VERSION = 'mb-v2.0.0';
 const LOCAL = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-180.png', './icons/icon-maskable-192.png', './icons/icon-maskable-512.png',
